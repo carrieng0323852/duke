@@ -12,15 +12,22 @@ public class Duke {
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
 
+        ArrayList<String> list = new ArrayList<String>();
+        int count = 0;
         while (true) {
             Scanner sc = new Scanner(System.in);
             String ab = sc.nextLine();
-
-            if ("bye".equals(ab)) {
+            if ("list".equals(ab)) {
+                for (int i = 0; i < list.size(); i++) {
+                    System.out.println((i+1) + ". " + list.get(i));
+                }
+            } else if ("bye".equals(ab)) {
                 System.out.println("Bye. Hope to see you again soon!");
                 break;
             } else {
-                System.out.println(ab);
+                list.add(ab);
+                System.out.println("added: " + ab);
+                count++;
             }
         }
     }
