@@ -7,7 +7,7 @@ public class Duke {
 
         Scanner sc = new Scanner(System.in);
         String ab = sc.nextLine();
-        ArrayList<Task> list = new ArrayList<>();
+        ArrayList<Task> list = new ArrayList<>(100);
 
         while (true) {
             if ("bye".equals(ab)) {
@@ -15,14 +15,15 @@ public class Duke {
                 break;
             } else if ("list".equals(ab)) {
                 System.out.println("Here are the tasks in your list:");
-                int count = 0;
                 for (int i = 0; i < list.size(); i++) {
                     Task t = list.get(i);
                     System.out.println((i + 1) + ". [" + t.getStatusIcon() + "] " + t.description);
                 }
             } else if (ab.contains("done")) {
-                char taskNum = ab.charAt(ab.length() - 1); //obtaining the numeric task number
-                Task doneTask = list.get(Character.getNumericValue(taskNum) - 1);
+                String taskNum = ab.substring(5, ab.length());
+                int taskNumber = Integer.parseInt(taskNum);
+                System.out.println(taskNumber);
+                Task doneTask = list.get(taskNumber - 1);
                 doneTask.markAsDone();
                 System.out.println("Nice! I've marked this task as done:");
                 System.out.println("[\u2713] " + doneTask.description);
