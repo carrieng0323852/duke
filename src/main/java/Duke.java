@@ -22,7 +22,6 @@ public class Duke {
             } else if (ab.contains("done")) {
                 String taskNum = ab.substring(5, ab.length());
                 int taskNumber = Integer.parseInt(taskNum);
-                System.out.println(taskNumber);
                 Task doneTask = list.get(taskNumber - 1);
                 doneTask.markAsDone();
                 System.out.println("Nice! I've marked this task as done:");
