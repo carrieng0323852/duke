@@ -3,10 +3,12 @@ import java.util.*;
 public class Task {
     protected String description;
     protected boolean isDone;
+    protected String additionalInformation;
 
     public Task(String description) {
         this.description = description;
         this.isDone = false;
+        this.additionalInformation = "";
     }
 
     public String getStatusIcon() {
@@ -15,5 +17,9 @@ public class Task {
 
     public void markAsDone() {
         this.isDone = true;
+    }
+
+    public String getType() {
+        return ("task");
     }
 }
