@@ -23,27 +23,10 @@ public class Duke {
         System.out.println("Hello! I'm Duke");
         System.out.println("What can I do for you?");
 
-        try {
-            checkList(list);
-            System.out.println("Here are the tasks in your list:");
-            for (int i = 0; i < list.size(); i++) {
-                Task t = list.get(i);
-                if (t.getType().contains("D")) {
-                    System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "]" + t.description + "(by:" + t.additionalInformation + ")");
-                } else if (t.getType().contains("E")) {
-                    System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "]" + t.description + "(at:" + t.additionalInformation + ")");
-                } else {
-                    System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + t.additionalInformation);
-                }
-            }
-        } catch (dukeException e) {
-            System.out.println("error\n" + e);
-        }
-
         Scanner sc = new Scanner(System.in);
         String ab = sc.next();
 
-        while (!ab.equalsIgnoreCase("bye")) {
+        while (!ab.equals("bye")) {
             //firstly checking if the command exists
             try {
              checkCommand(ab);
@@ -51,16 +34,16 @@ public class Duke {
                 System.out.println("error\n" + e);
             }
             //if command is to list and whether the list is empty
-            if ("list".equals(ab)) {
+            if (ab.equals("list")) {
                 try {
                     checkList(list);
                     System.out.println("Here are the tasks in your list:");
                     for (int i = 0; i < list.size(); i++) {
                         Task t = list.get(i);
                         if (t.getType().contains("D")) {
-                            System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "]" + t.description + "(by:" + t.additionalInformation + ")");
+                            System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + " (by: " + t.additionalInformation + ")");
                         } else if (t.getType().contains("E")) {
-                            System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "]" + t.description + "(at:" + t.additionalInformation + ")");
+                            System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + " (at: " + t.additionalInformation + ")");
                         } else {
                             System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + t.additionalInformation);
                         }
@@ -70,21 +53,20 @@ public class Duke {
                 }
             } else if (ab.equals("done")) { //else check if the valid command is done todo event or deadline
                 ab = sc.nextLine();
-                //String cd = ab.substring(1, ab.length());
                 String[] output = ab.split(Pattern.quote(" "));
-                int taskNumber = Integer.parseInt(output[1]);
+                int taskNumber = Integer.parseInt(output[1]) - 1;
                 try {
-                    checkTask((taskNumber - 1), list);
-                    Task taskDone = list.get(taskNumber - 1);
+                    checkTask(taskNumber, list);
+                    Task taskDone = list.get(taskNumber);
                     taskDone.markAsDone();
                     inputFile newDone = new inputFile();
                     String type;
-                    if (taskDone.getType().equals("T")) {
-                        type = "todo";
-                    } else if (taskDone.getType().equals("D")) {
-                        type = "deadline";
+                    if (taskDone.getType().equals("[T]")) {
+                        type = "T";
+                    } else if (taskDone.getType().equals("[D]")) {
+                        type = "D";
                     } else {
-                        type = "event";
+                        type = "E";
                     }
                     newDone.doneTask(taskDone.description, type);
                     System.out.println("Nice! I've marked this task as done:");
@@ -100,9 +82,9 @@ public class Duke {
                         checkDescription(ab);
                         Task newToDo = new Todo(ab);
                         System.out.println("Got it. I've added this task:");
-                        System.out.println(newToDo.getType() + "[" + newToDo.getStatusIcon() + "]" + " " + ab);
+                        System.out.println(newToDo.getType() + "[" + newToDo.getStatusIcon() + "] " + ab);
                         list.add(newToDo);
-                        newFile.addTodo(ab); //abtrim
+                        newFile.addTodo(ab.trim());
                         System.out.println("Now you have " + list.size() + " tasks in the list.");
                     } catch (dukeException e) {
                         System.out.println("error\n" + e);
@@ -114,9 +96,9 @@ public class Duke {
                         checkDescription(output[0]);
                         Task newDeadline = new Deadline(output[0], output[1]);
                         System.out.println("Got it. I've added this task:");
-                        System.out.println(newDeadline.getType() + "[" + newDeadline.getStatusIcon() + "]" + " " + output[0] + " (by: " + output[1] + ")");
+                        System.out.println(newDeadline.getType() + "[" + newDeadline.getStatusIcon() + "] " + output[0] + " (by: " + output[1] + ")");
                         list.add(newDeadline);
-                        newFile.addDeadline(output[0], output[1]);
+                        newFile.addDeadline(output[0].trim(), output[1].trim());
                         System.out.println("Now you have " + list.size() + " tasks in the list.");
                     } catch (dukeException e) {
                         System.out.println("error\n" + e);
@@ -128,9 +110,9 @@ public class Duke {
                         checkDescription(output[0]);
                         Task newEvent = new Event(output[0], output[1]);
                         System.out.println("Got it. I've added this task:");
-                        System.out.println(newEvent.getType() + "[" + newEvent.getStatusIcon() + "]" + " " + output[0] + " (at: " + output[1] + ")");
+                        System.out.println(newEvent.getType() + "[" + newEvent.getStatusIcon() + "] " + output[0] + " (at: " + output[1] + ")");
                         list.add(newEvent);
-                        newFile.addEvent(output[0], output[1]);
+                        newFile.addEvent(output[0].trim(), output[1].trim());
                         System.out.println("Now you have " + list.size() + " tasks in the list.");
                     } catch (dukeException e) {
                         System.out.println("error\n" + e);
@@ -141,20 +123,6 @@ public class Duke {
         }
         System.out.println("Bye. Hope to see you again soon!");
     }
-
-    public static void printList(ArrayList<Task> list) {
-        System.out.println("Here are the tasks in your list:");
-            for (int i = 0; i < list.size(); i++) {
-                Task t = list.get(i);
-                if (t.getType().contains("E")) {
-                    System.out.println((i + 1) + "." + t.getType() + t.getStatusIcon() + " " + t.description + " (at: " + t.additionalInformation + ")");
-                } else if (t.getType().contains("D")) {
-                    System.out.println((i + 1) + "." + t.getType() + t.getStatusIcon() + " " + t.description + " (by: " + t.additionalInformation + ")");
-                } else {
-                    System.out.println((i + 1) + "." + t.getType() + t.getStatusIcon() + " " + t.description + t.additionalInformation);
-                }
-            }
-        }
 
     //check if the command word is one of the 5
     static void checkCommand(String input) throws dukeException {

@@ -7,7 +7,7 @@ public class readFile {
     private Scanner sc;
 
     public void openFile() throws FileNotFoundException {
-        sc = new Scanner(new File("C:\\Users\\65839\\duke\\data\\duke.txt"));
+        sc = new Scanner(new File("C:\\Users\\65839\\duke\\data\\duke.txt")); //scans original file if it exists
     }
 
     public ArrayList<Task> readInput() {
@@ -17,7 +17,7 @@ public class readFile {
             String[] output = ab.split(Pattern.quote(" | "));
             if (output.length == 3) { //if todo
                 Todo newToDo = new Todo(output[2]); //output2 is description
-                if ("1".equals(output[1])) { //means completed
+                if (output[1].equals("1")) { //means completed
                     newToDo.markAsDone();
                 } else {
                     newToDo.isDone = false;
