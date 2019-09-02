@@ -50,13 +50,11 @@ public class inputFile {
         while (sc.hasNextLine()) {
             String ab = sc.nextLine();
             String[] output = ab.split(Pattern.quote(" | "));
-            String[] token = output[1].split(Pattern.quote(" "));
-            String[] tokens = token[0].split(Pattern.quote("/"));
             if (output[0].equals(type) && output[2].equals(description)) {
                 if (output.length == 3) { //for todo
                     print.println(output[0] + " | 1 | " + output[2]);
                 } else { //for deadline or event
-                    print.println(output[0] + " | 1 | " + output[2] + " | " + tokens[0] + getsuffix(Integer.parseInt(tokens[0])) + " of " + getMonth(Integer.parseInt(tokens[1])) + " " + tokens[2] + ", " + getHours(token[1]) + ":" + token[1].charAt(2) + token[1].charAt(3) + convert12(token[1]));
+                    print.println(output[0] + " | 1 | " + output[2] + " | " + output[3]);
                 }
             } else {
                 print.println(ab);

@@ -55,8 +55,10 @@ public class Duke {
                 }
             } else if (ab.equals("done")) { //else check if the valid command is done todo event or deadline
                 ab = sc.nextLine();
-                String[] output = ab.split(Pattern.quote(" "));
-                int taskNumber = Integer.parseInt(output[1]) - 1;
+                //String[] output = ab.split(Pattern.quote(" "));
+                String taskNum = ab.substring(1, ab.length());
+                int taskNumber = Integer.parseInt(taskNum) - 1;
+                //System.out.println(taskNumber);
                 try {
                     checkTask(taskNumber, list);
                     Task taskDone = list.get(taskNumber);

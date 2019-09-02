@@ -1,4 +1,0 @@
-D | 0 | return book | 2nd of September 2019, 3:59pm
-D | 0 | return book | 22nd of September 2019, 3:39pm
-E | 0 | lecture | 14th of October 2019, 11:49pm
-E | 0 | fingerprint | 1st of March 1000, 12:01pm
