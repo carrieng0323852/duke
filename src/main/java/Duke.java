@@ -3,6 +3,8 @@ import java.io.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.regex.Pattern;
+import java.text.ParseException;
+import java.text.DateFormatSymbols;
 
 public class Duke {
     public static void main (String[] args) throws IOException {
@@ -41,9 +43,9 @@ public class Duke {
                     for (int i = 0; i < list.size(); i++) {
                         Task t = list.get(i);
                         if (t.getType().contains("D")) {
-                            System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + " (by: " + t.additionalInformation + ")");
+                            System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + " (by: " + t.extra1 + t.extra2 + " of " + t.extra3 + " " + t.extra4 + ", " + t.extra5 + ":" + t.extra6 + t.extra7 + t.extra8 + ")");
                         } else if (t.getType().contains("E")) {
-                            System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + " (at: " + t.additionalInformation + ")");
+                            System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + " (at: " + t.extra1 + t.extra2 + " of " + t.extra3 + " " + t.extra4 + ", " + t.extra5 + ":" + t.extra6 + t.extra7 + t.extra8 + ")");
                         } else {
                             System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + t.additionalInformation);
                         }
@@ -92,11 +94,13 @@ public class Duke {
                 } else if (ab.equals("deadline")) {
                     ab = sc.nextLine();
                     String[] output = ab.split(Pattern.quote(" /by "));
+                    String[] token = output[1].split(Pattern.quote(" "));
+                    String[] tokens = token[0].split(Pattern.quote("/"));
                     try {
                         checkDescription(output[0]);
-                        Task newDeadline = new Deadline(output[0], output[1]);
+                        Task newDeadline = new Deadline(output[0], tokens[0], getsuffix(Integer.parseInt(tokens[0])), getMonth(Integer.parseInt(tokens[1])), tokens[2], getHours(token[1]), token[1].charAt(2), token[1].charAt(3), convert12(token[1]));
                         System.out.println("Got it. I've added this task:");
-                        System.out.println(newDeadline.getType() + "[" + newDeadline.getStatusIcon() + "] " + output[0] + " (by: " + output[1] + ")");
+                        System.out.println(newDeadline.getType() + "[" + newDeadline.getStatusIcon() + "] " + output[0] + " (by: " + tokens[0] + getsuffix(Integer.parseInt(tokens[0])) + " of " + getMonth(Integer.parseInt(tokens[1])) + " " + tokens[2] + ", " + getHours(token[1]) + ":" + (token[1].charAt(2)) + (token[1].charAt(3)) + convert12(token[1]) + ")");
                         list.add(newDeadline);
                         newFile.addDeadline(output[0].trim(), output[1].trim());
                         System.out.println("Now you have " + list.size() + " tasks in the list.");
@@ -106,11 +110,13 @@ public class Duke {
                 } else if (ab.equals("event")) {
                     ab = sc.nextLine();
                     String[] output = ab.split(Pattern.quote(" /at "));
+                    String[] token = output[1].split(Pattern.quote(" "));
+                    String[] tokens = token[0].split(Pattern.quote("/"));
                     try {
                         checkDescription(output[0]);
-                        Task newEvent = new Event(output[0], output[1]);
+                        Task newEvent = new Event(output[0], tokens[0], getsuffix(Integer.parseInt(tokens[0])), getMonth(Integer.parseInt(tokens[1])), tokens[2], getHours(token[1]), token[1].charAt(2), token[1].charAt(3), convert12(token[1]));
                         System.out.println("Got it. I've added this task:");
-                        System.out.println(newEvent.getType() + "[" + newEvent.getStatusIcon() + "] " + output[0] + " (at: " + output[1] + ")");
+                        System.out.println(newEvent.getType() + "[" + newEvent.getStatusIcon() + "] " + output[0] + " (at: " + tokens[0] + getsuffix(Integer.parseInt(tokens[0])) + " of " + getMonth(Integer.parseInt(tokens[1])) + " " + tokens[2] + ", " + getHours(token[1]) + ":"  + (token[1].charAt(2)) + (token[1].charAt(3)) + convert12(token[1])+ ")");
                         list.add(newEvent);
                         newFile.addEvent(output[0].trim(), output[1].trim());
                         System.out.println("Now you have " + list.size() + " tasks in the list.");
@@ -159,6 +165,49 @@ public class Duke {
     static void checkDescription(String input) throws dukeException {
         if (input.isEmpty()) {
             throw new dukeException("☹ OOPS!!! The description cannot be empty.");
+        }
+    }
+
+    static String getsuffix(int x) {
+        x %= 10;
+        if (x == 1) {
+            return "st";
+        } else if (x == 2) {
+            return "nd";
+        } else if (x == 3) {
+            return "rd";
+        } else {
+            return "th";
+        }
+    }
+
+    static String getMonth(int month) {
+        return new DateFormatSymbols().getMonths()[month - 1];
+    }
+
+    static int getHours(String str) {
+        int h1 = (int) str.charAt(0) - '0';
+        int h2 = (int) str.charAt(1) - '0';
+        int hh = (h1 * 10) + h2;
+
+        hh %= 12;
+
+        if (hh == 0) {
+            return 12;
+        } else {
+            return hh;
+        }
+    }
+
+    static String convert12(String str) {
+        int h1 = (int) str.charAt(0) - '0';
+        int h2 = (int) str.charAt(1) - '0';
+        int hh = (h1 * 10) + h2;
+
+        if (hh < 12) {
+            return "am";
+        } else {
+            return "pm";
         }
     }
 }

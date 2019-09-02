@@ -25,7 +25,19 @@ public class readFile {
                 list.add(newToDo);
             } else { //deadline or event
                 if (output[0].equals("D")) {
-                    Deadline newDeadline = new Deadline(output[2], output[3]);
+                    String[] token = output[3].split(Pattern.quote(" "));
+                    char d;
+                    String date, suffix;
+                    if (token[0].length() == 3) {
+                        d = token[0].charAt(0);
+                        date = Character.toString(d);
+                        suffix = token[0].substring(1, 3);
+                    } else {
+                        date = token[0].substring(0, 2);
+                        suffix = token[0].substring(2, 4);
+                    }
+                    String[] tokens = token[4].split(Pattern.quote(":"));
+                    Deadline newDeadline = new Deadline(output[2], date, suffix, token[2], token[3].substring(0, (token[3].length() - 1)), Integer.parseInt(tokens[0]), tokens[1].charAt(0), tokens[1].charAt(1), tokens[1].substring(2, 4));
                     if (output[1].equals("1")) {
                         newDeadline.markAsDone();
                     } else {
@@ -34,7 +46,19 @@ public class readFile {
                     list.add(newDeadline);
                 } else {
                     if (output[0].equals("E")) {
-                        Event newEvent = new Event(output[2], output[3]);
+                        String[] token = output[3].split(Pattern.quote(" "));
+                        char d;
+                        String date, suffix;
+                        if (token[0].length() == 3) {
+                            d = token[0].charAt(0);
+                            date = Character.toString(d);
+                            suffix = token[0].substring(1, 3);
+                        } else {
+                            date = token[0].substring(0, 2);
+                            suffix = token[0].substring(2, 4);
+                        }
+                        String[] tokens = token[4].split(Pattern.quote(":"));
+                        Event newEvent = new Event(output[2], date, suffix, token[2], token[3].substring(0, (token[3].length() - 1)), Integer.parseInt(tokens[0]), tokens[1].charAt(0), tokens[1].charAt(1), tokens[1].substring(2, 4));
                         if (output[1].equals("1")) {
                             newEvent.markAsDone();
                         } else {

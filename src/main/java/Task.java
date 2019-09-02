@@ -4,6 +4,15 @@ public class Task {
     protected String description;
     protected boolean isDone;
     protected String additionalInformation;
+    protected String extra1;
+    protected String extra2;
+    protected String extra3;
+    protected String extra4;
+    protected int extra5;
+    protected char extra6;
+    protected char extra7;
+    protected String extra8;
+
 
     public Task(String description) {
         this.description = description;

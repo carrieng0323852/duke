@@ -1,4 +1,5 @@
 import java.io.*;
+import java.text.DateFormatSymbols;
 import java.util.*;
 import java.lang.*;
 import java.util.regex.Pattern;
@@ -23,14 +24,18 @@ public class inputFile {
 
     public void addDeadline(String output1, String output2) throws IOException {
         BufferedWriter fw = new BufferedWriter(new FileWriter("C:\\Users\\65839\\duke\\data\\duke.txt", true));
-        fw.write("D | 0 | " + output1 + " | " + output2);
+        String[] token = output2.split(Pattern.quote(" "));
+        String[] tokens = token[0].split(Pattern.quote("/"));
+        fw.write("D | 0 | " + output1 + " | " + tokens[0] + getsuffix(Integer.parseInt(tokens[0])) + " of " + getMonth(Integer.parseInt(tokens[1])) + " " + tokens[2] + ", " + getHours(token[1]) + ":" + token[1].charAt(2) + token[1].charAt(3) + convert12(token[1]));
         fw.newLine();
         fw.close();
     }
 
     public void addEvent(String output1, String output2) throws IOException {
         BufferedWriter fw = new BufferedWriter(new FileWriter("C:\\Users\\65839\\duke\\data\\duke.txt",true));
-        fw.write("E | 0 | " + output1 + " | " + output2);
+        String[] token = output2.split(Pattern.quote(" "));
+        String[] tokens = token[0].split(Pattern.quote("/"));
+        fw.write("E | 0 | " + output1 + " | " + tokens[0] + getsuffix(Integer.parseInt(tokens[0])) + " of " + getMonth(Integer.parseInt(tokens[1])) + " " + tokens[2] + ", " + getHours(token[1]) + ":" + token[1].charAt(2) + token[1].charAt(3) + convert12(token[1]) );
         fw.newLine();
         fw.close();
     }
@@ -45,11 +50,13 @@ public class inputFile {
         while (sc.hasNextLine()) {
             String ab = sc.nextLine();
             String[] output = ab.split(Pattern.quote(" | "));
+            String[] token = output[1].split(Pattern.quote(" "));
+            String[] tokens = token[0].split(Pattern.quote("/"));
             if (output[0].equals(type) && output[2].equals(description)) {
                 if (output.length == 3) { //for todo
                     print.println(output[0] + " | 1 | " + output[2]);
                 } else { //for deadline or event
-                    print.println(output[0] + " | 1 | " + output[2] + " | " + output[3]);
+                    print.println(output[0] + " | 1 | " + output[2] + " | " + tokens[0] + getsuffix(Integer.parseInt(tokens[0])) + " of " + getMonth(Integer.parseInt(tokens[1])) + " " + tokens[2] + ", " + getHours(token[1]) + ":" + token[1].charAt(2) + token[1].charAt(3) + convert12(token[1]));
                 }
             } else {
                 print.println(ab);
@@ -60,6 +67,49 @@ public class inputFile {
         print.close();
         currentFile.delete();
         temporaryFile.renameTo(new File("C:\\Users\\65839\\duke\\data\\duke.txt"));
+    }
+
+    static String getsuffix(int x) {
+        x %= 10;
+        if (x == 1) {
+            return "st";
+        } else if (x == 2) {
+            return "nd";
+        } else if (x == 3) {
+            return "rd";
+        } else {
+            return "th";
+        }
+    }
+
+    static String getMonth(int month) {
+        return new DateFormatSymbols().getMonths()[month - 1];
+    }
+
+    static int getHours(String str) {
+        int h1 = (int) str.charAt(0) - '0';
+        int h2 = (int) str.charAt(1) - '0';
+        int hh = (h1 * 10) + h2;
+
+        hh %= 12;
+
+        if (hh == 0) {
+            return 12;
+        } else {
+            return hh;
+        }
+    }
+
+    static String convert12(String str) {
+        int h1 = (int) str.charAt(0) - '0';
+        int h2 = (int) str.charAt(1) - '0';
+        int hh = (h1 * 10) + h2;
+
+        if (hh < 12) {
+            return "am";
+        } else {
+            return "pm";
+        }
     }
 
     public void closeFile() {
