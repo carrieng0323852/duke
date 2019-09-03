@@ -31,7 +31,7 @@ public class Duke {
         while (!ab.equals("bye")) {
             //firstly checking if the command exists
             try {
-             checkCommand(ab);
+                checkCommand(ab);
             } catch (dukeException e) {
                 System.out.println("error\n" + e);
             }
@@ -47,7 +47,7 @@ public class Duke {
                         } else if (t.getType().contains("E")) {
                             System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + " (at: " + t.extra1 + t.extra2 + " of " + t.extra3 + " " + t.extra4 + ", " + t.extra5 + ":" + t.extra6 + t.extra7 + t.extra8 + ")");
                         } else {
-                            System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description + t.additionalInformation);
+                            System.out.println((i + 1) + "." + t.getType() + "[" + t.getStatusIcon() + "] " + t.description);
                         }
                     }
                 } catch (dukeException e) {
@@ -55,10 +55,8 @@ public class Duke {
                 }
             } else if (ab.equals("done")) { //else check if the valid command is done todo event or deadline
                 ab = sc.nextLine();
-                //String[] output = ab.split(Pattern.quote(" "));
                 String taskNum = ab.substring(1, ab.length());
                 int taskNumber = Integer.parseInt(taskNum) - 1;
-                //System.out.println(taskNumber);
                 try {
                     checkTask(taskNumber, list);
                     Task taskDone = list.get(taskNumber);
@@ -171,15 +169,19 @@ public class Duke {
     }
 
     static String getsuffix(int x) {
-        x %= 10;
-        if (x == 1) {
-            return "st";
-        } else if (x == 2) {
-            return "nd";
-        } else if (x == 3) {
-            return "rd";
-        } else {
+        if (x >= 11 && x <= 13) {
             return "th";
+        } else {
+            x %= 10;
+            if (x == 1) {
+                return "st";
+            } else if (x == 2) {
+                return "nd";
+            } else if (x == 3) {
+                return "rd";
+            } else {
+                return "th";
+            }
         }
     }
 

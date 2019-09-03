@@ -3,7 +3,6 @@ import java.util.*;
 public class Task {
     protected String description;
     protected boolean isDone;
-    protected String additionalInformation;
     protected String extra1;
     protected String extra2;
     protected String extra3;
@@ -17,7 +16,6 @@ public class Task {
     public Task(String description) {
         this.description = description;
         this.isDone = false;
-        this.additionalInformation = "";
     }
 
     public String getStatusIcon() {

@@ -67,6 +67,27 @@ public class inputFile {
         temporaryFile.renameTo(new File("C:\\Users\\65839\\duke\\data\\duke.txt"));
     }
 
+    public void doneDelete(String description, String type) throws IOException {
+
+        File currentFile = new File("C:\\Users\\65839\\duke\\data\\duke.txt");
+        File temporaryFile = new File("C:\\Users\\65839\\duke\\data\\temporaryduke.txt");
+        BufferedWriter out = new BufferedWriter(new FileWriter("C:\\Users\\65839\\duke\\data\\temporaryduke.txt", true));
+        PrintWriter print = new PrintWriter(out);
+        sc = new Scanner(new File("C:\\Users\\65839\\duke\\data\\duke.txt"));
+        while (sc.hasNextLine()) {
+            String ab = sc.nextLine();
+            String[] output = ab.split(Pattern.quote(" | "));
+            if (!type.equals(output[0]) && !description.equals(output[2])) {
+                print.println(ab);
+            }
+        }
+        sc.close();
+        print.flush();
+        print.close();
+        currentFile.delete();
+        temporaryFile.renameTo(new File("C:\\Users\\65839\\duke\\data\\duke.txt"));
+    }
+
     static String getsuffix(int x) {
         x %= 10;
         if (x == 1) {
