@@ -77,7 +77,8 @@ public class inputFile {
         while (sc.hasNextLine()) {
             String ab = sc.nextLine();
             String[] output = ab.split(Pattern.quote(" | "));
-            if (!type.equals(output[0]) && !description.equals(output[2])) {
+            if (output[0].equals(type) && output[2].equals(description)) {
+            } else {
                 print.println(ab);
             }
         }
@@ -89,15 +90,19 @@ public class inputFile {
     }
 
     static String getsuffix(int x) {
-        x %= 10;
-        if (x == 1) {
-            return "st";
-        } else if (x == 2) {
-            return "nd";
-        } else if (x == 3) {
-            return "rd";
-        } else {
+        if (x >= 11 || x <= 13) {
             return "th";
+        } else {
+            x %= 10;
+            if (x == 1) {
+                return "st";
+            } else if (x == 2) {
+                return "nd";
+            } else if (x == 3) {
+                return "rd";
+            } else {
+                return "th";
+            }
         }
     }
 

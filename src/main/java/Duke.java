@@ -76,6 +76,30 @@ public class Duke {
                 } catch (dukeException e) {
                     System.out.println("error\n" + e);
                 }
+            } else if (ab.equals("delete")) {
+                ab = sc.nextLine();
+                String taskDel = ab.substring(1, ab.length());
+                int index = Integer.parseInt(taskDel) - 1;
+                try {
+                    checkDelete(index, list);
+                    inputFile newDelete = new inputFile();
+                    Task taskDelete = list.get(index);
+                    System.out.println("Noted. I've removed this task:");
+                    String t = taskDelete.getType();
+                    String type = t.substring(1, (t.length() - 1));
+                    if (t.equals("[T]")) {
+                        System.out.println(t + "[" + taskDelete.getStatusIcon() + "] " + taskDelete.description);
+                    } else if (t.equals("[D]")) {
+                        System.out.println(t + "[" + taskDelete.getStatusIcon() + "] " + taskDelete.description + " (by: " + taskDelete.extra1 + taskDelete.extra2 + " of " + taskDelete.extra3 + " " + taskDelete.extra4 + ", " + taskDelete.extra5 + ":" + taskDelete.extra6 + taskDelete.extra7 + taskDelete.extra8 + ")");
+                    } else if (t.equals("[E]")) {
+                        System.out.println(t + "[" + taskDelete.getStatusIcon() + "] " + taskDelete.description + " (at: " + taskDelete.extra1 + taskDelete.extra2 + " of " + taskDelete.extra3 + " " + taskDelete.extra4 + ", " + taskDelete.extra5 + ":" + taskDelete.extra6 + taskDelete.extra7 + taskDelete.extra8 + ")");
+                    }
+                    newDelete.doneDelete(taskDelete.description, type);
+                    list.remove(index);
+                    System.out.println("Now you have " + list.size() + " tasks in the list.");
+                } catch (dukeException e) {
+                    System.out.println("error\n" + e);
+                }
             } else {
                 inputFile newFile = new inputFile();
                 if (ab.equals("todo")) {
@@ -132,9 +156,9 @@ public class Duke {
 
     //check if the command word is one of the 5
     static void checkCommand(String input) throws dukeException {
-        String[] commands = {"list", "done", "todo", "deadline", "event"};
+        String[] commands = {"list", "done", "todo", "deadline", "event", "delete"};
         int count = 0;
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             if (commands[i].equals(input)) {
                 count++;
             }
@@ -159,6 +183,11 @@ public class Duke {
             if ("\u2713".equals(temp)) {
                 throw new dukeException("☹ OOPS!!! I'm sorry, but the task has already been completed!");
             }
+        }
+    }
+    static void checkDelete(int x, ArrayList<Task> list) throws dukeException {
+        if (x < 0 || x >= list.size()) {
+            throw new dukeException("☹ OOPS!!! I'm sorry, but there is no such task number.");
         }
     }
     //check if todo deadline and event has a description
