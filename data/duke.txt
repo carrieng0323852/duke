@@ -1,0 +1,6 @@
+E | 1 | tuition | 3th of September 2019, 6:00pm
+E | 0 | driving lesson | 4th of September 2019, 11:30am
+D | 0 | this | 4th of September 2019, 11:59pm
+E | 0 | sgh | 5th of September 2019, 2:30pm
+E | 0 | driving lesson | 6th of September 2019, 3:00pm
+E | 0 | driving test | 7th of September 2019, 11:45am

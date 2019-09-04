@@ -100,6 +100,30 @@ public class Duke {
                 } catch (dukeException e) {
                     System.out.println("error\n" + e);
                 }
+            } else if (ab.equals("find")) {
+                ab = sc.nextLine();
+                String taskDes = ab.substring(1, ab.length());
+                boolean flag = true;
+                int count = 0;
+                for (int i = 0; i < list.size(); i++) {
+                    if (list.get(i).description.contains(taskDes)) {
+                        count++;
+                        if (flag) {
+                            System.out.println("Here are the matching tasks in your list:");
+                            flag = false;
+                        }
+                        if (list.get(i).getType().equals("[T]")) {
+                            System.out.println(list.get(i).getType() + "[" + list.get(i).getStatusIcon() + "] " + list.get(i).description);
+                        } else if (list.get(i).getType().equals("[D]")) {
+                            System.out.println(list.get(i).getType() + "[" + list.get(i).getStatusIcon() + "] " + list.get(i).description + " (by: " + list.get(i).extra1 + list.get(i).extra2 + " of " + list.get(i).extra3 + " " + list.get(i).extra4 + ", " + list.get(i).extra5 + ":" + list.get(i).extra6 + list.get(i).extra7 + list.get(i).extra8 + ")");
+                        } else if (list.get(i).getType().equals("[E]")) {
+                            System.out.println(list.get(i).getType() + "[" + list.get(i).getStatusIcon() + "] " + list.get(i).description + " (at: " + list.get(i).extra1 + list.get(i).extra2 + " of " + list.get(i).extra3 + " " + list.get(i).extra4 + ", " + list.get(i).extra5 + ":" + list.get(i).extra6 + list.get(i).extra7 + list.get(i).extra8 + ")");
+                        }
+                    }
+                }
+                if (count == 0) {
+                    System.out.println("☹ OOPS!!! I'm sorry, but there are no matching tasks in your list.");
+                }
             } else {
                 inputFile newFile = new inputFile();
                 if (ab.equals("todo")) {
@@ -156,9 +180,9 @@ public class Duke {
 
     //check if the command word is one of the 5
     static void checkCommand(String input) throws dukeException {
-        String[] commands = {"list", "done", "todo", "deadline", "event", "delete"};
+        String[] commands = {"list", "done", "todo", "deadline", "event", "delete", "find"};
         int count = 0;
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 7; i++) {
             if (commands[i].equals(input)) {
                 count++;
             }
