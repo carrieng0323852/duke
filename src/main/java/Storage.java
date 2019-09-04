@@ -1,18 +1,96 @@
 import java.io.*;
-import java.text.DateFormatSymbols;
 import java.util.*;
 import java.lang.*;
 import java.util.regex.Pattern;
 
 //0 is incomplete 1 is complete
 
-public class inputFile {
+public class Storage {
 
     private Scanner sc;
-    private Formatter fm;
+    private File dataFolder;
+    private File data;
 
-    public void openFile() throws FileNotFoundException {
-        fm = new Formatter("C:\\Users\\65839\\duke\\data\\duke.txt"); //creates empty file
+    public Storage(File dataFolder, File data) {
+        this.dataFolder = dataFolder;
+        this.data = data;
+    }
+
+    public void openFile() throws IOException {
+        sc = new Scanner(data);
+    }
+
+    public ArrayList<Task> load() throws IOException {
+        ArrayList<Task> list = new ArrayList<>(100);
+        if (data.exists()) {
+            openFile();
+            readInput(list);
+            closeFile();
+        } else {
+            dataFolder.mkdir();
+            FileWriter wr = new FileWriter(data);
+        }
+        return list;
+    }
+
+    public void readInput(ArrayList<Task> list) throws IOException {
+        while (sc.hasNextLine()) {
+            String ab = sc.nextLine();
+            String[] output = ab.split(Pattern.quote(" | "));
+            if (output.length == 3) { //if todo
+                ToDo newToDo = new ToDo(output[2]); //output2 is description
+                if (output[1].equals("1")) { //means completed
+                    newToDo.markAsDone();
+                } else {
+                    newToDo.isDone = false;
+                }
+                list.add(newToDo);
+            } else { //deadline or event
+                if (output[0].equals("D")) {
+                    String[] token = output[3].split(Pattern.quote(" "));
+                    char d;
+                    String date, suffix;
+                    if (token[0].length() == 3) {
+                        d = token[0].charAt(0);
+                        date = Character.toString(d);
+                        suffix = token[0].substring(1, 3);
+                    } else {
+                        date = token[0].substring(0, 2);
+                        suffix = token[0].substring(2, 4);
+                    }
+                    String[] tokens = token[4].split(Pattern.quote(":"));
+                    Deadline newDeadline = new Deadline(output[2], date, suffix, token[2], token[3].substring(0, (token[3].length() - 1)), Integer.parseInt(tokens[0]), tokens[1].charAt(0), tokens[1].charAt(1), tokens[1].substring(2, 4));
+                    if (output[1].equals("1")) {
+                        newDeadline.markAsDone();
+                    } else {
+                        newDeadline.isDone = false;
+                    }
+                    list.add(newDeadline);
+                } else {
+                    if (output[0].equals("E")) {
+                        String[] token = output[3].split(Pattern.quote(" "));
+                        char d;
+                        String date, suffix;
+                        if (token[0].length() == 3) {
+                            d = token[0].charAt(0);
+                            date = Character.toString(d);
+                            suffix = token[0].substring(1, 3);
+                        } else {
+                            date = token[0].substring(0, 2);
+                            suffix = token[0].substring(2, 4);
+                        }
+                        String[] tokens = token[4].split(Pattern.quote(":"));
+                        Event newEvent = new Event(output[2], date, suffix, token[2], token[3].substring(0, (token[3].length() - 1)), Integer.parseInt(tokens[0]), tokens[1].charAt(0), tokens[1].charAt(1), tokens[1].substring(2, 4));
+                        if (output[1].equals("1")) {
+                            newEvent.markAsDone();
+                        } else {
+                            newEvent.isDone = false;
+                        }
+                        list.add(newEvent);
+                    }
+                }
+            }
+        }
     }
 
     public void addTodo(String task) throws IOException {
@@ -87,5 +165,9 @@ public class inputFile {
         print.close();
         currentFile.delete();
         temporaryFile.renameTo(new File("C:\\Users\\65839\\duke\\data\\duke.txt"));
+    }
+
+    public void closeFile() {
+        sc.close();
     }
 }

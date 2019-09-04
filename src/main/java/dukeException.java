@@ -50,4 +50,10 @@ public class dukeException extends Exception {
             throw new dukeException("☹ OOPS!!! The description cannot be empty.");
         }
     }
+
+    public static void checkDue(String input) throws dukeException {
+        if (!input.contains("/by") || !input.contains("/at")) {
+            throw new dukeException("☹ OOPS!!! There should be a date.");
+        }
+    }
 }

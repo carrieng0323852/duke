@@ -9,7 +9,7 @@ public class ToDo extends Task {
         return ("[T]");
     }
 
-    public static void addToDo (ArrayList<Task> list, String ab, inputFile newFile){
+    public static void addToDo (ArrayList<Task> list, String ab, Storage newFile){
         try {
             dukeException.checkDescription(ab);
             Task newToDo = new ToDo(ab);
